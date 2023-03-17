@@ -17,4 +17,14 @@ router.post('/register', async(req, res)=>{
 }
 })
 
+router.post('/login', async (req, res)=>{
+    const {email, password} = req.body
+    const userDoc = await User.findOne({email})
+    if(userDoc){
+        res.json('ditemukan')
+    }else{
+        res.json('tidak ditemukan')
+    }
+})
+
 module.exports = router

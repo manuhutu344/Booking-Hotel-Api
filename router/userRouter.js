@@ -12,8 +12,8 @@ router.post('/register', async(req, res)=>{
         password:bcrypt.hashSync(password, bycryptSalt),
     })
     res.json(userDoc)
-} catch (e) {
-    res.status(422).json(e)
+} catch (error) {
+    res.status(422).json(error)
 }
 })
 
@@ -21,7 +21,12 @@ router.post('/login', async (req, res)=>{
     const {email, password} = req.body
     const userDoc = await User.findOne({email})
     if(userDoc){
-        res.json('ditemukan')
+        const passOK = bcrypt.compareSync(password, userDoc.password)
+        if(passOK){
+            res.json('password jadi')
+        }else{
+            res.status(400).json('password tidak jadi')
+        }
     }else{
         res.json('tidak ditemukan')
     }

@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const bcryptSalt = bcrypt.genSaltSync(10)
+const jwtSecret = '!@#$%^&*_-+=qwertyuiopasdfghjklzxcvbnm1234567890:;<>?'
 
 router.post('/register', async(req, res)=>{
     const {name, email, password} = req.body
@@ -23,7 +25,10 @@ router.post('/login', async (req, res)=>{
     if(userDoc){
         const passOK = bcrypt.compareSync(password, userDoc.password)
         if(passOK){
-            res.json('password jadi')
+            jwt.sign({email:userDoc.email, id:userDoc._id}, jwtSecret, {}, (err, token)=>{
+                if(err) throw err
+                res.cookie('token', token).json('password jadi')
+            })
         }else{
             res.status(400).json('password tidak jadi')
         }

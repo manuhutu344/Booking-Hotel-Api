@@ -10,7 +10,7 @@ router.post('/register', async(req, res)=>{
           name,
           email,
           password:bcrypt.hashSync(password, bcryptSalt),
-        });
+        })
         res.json(userDoc)
       } catch (e) {
         res.status(422).json(e)

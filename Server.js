@@ -6,7 +6,7 @@ require('./connection')
 const app = express()
 
 app.use(express.json())
-app.use(cors({credentials:true, origin:' http://127.0.0.1:5173'}))
+app.use(cors({credentials:true, origin:' http://localhost:5173'}))
 app.use('/user', userRouter)
 
 

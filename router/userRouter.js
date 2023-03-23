@@ -27,7 +27,7 @@ router.post('/login', async (req, res)=>{
         if(passOK){
             jwt.sign({email:userDoc.email, id:userDoc._id}, jwtSecret, {}, (err, token)=>{
                 if(err) throw err
-                res.cookie('token', token).json('password jadi')
+                res.cookie('token', token).json(userDoc)
             })
         }else{
             res.status(400).json('password tidak jadi')
@@ -35,6 +35,11 @@ router.post('/login', async (req, res)=>{
     }else{
         res.json('tidak ditemukan')
     }
+})
+
+router.get('/profile', (req, res)=>{
+    const {token} = req.cookies
+    res.json({token})
 })
 
 module.exports = router

@@ -39,7 +39,15 @@ router.post('/login', async (req, res)=>{
 
 router.get('/profile', (req, res)=>{
     const {token} = req.cookies
-    res.json({token})
+    if(token){
+        jwt.verify(token, jwtSecret, {}, async(err, userData)=>{
+            if(err) throw err
+            const userDoc = await User.findById(userData.id)
+            res.json(userDoc)
+        })
+    }else{
+        res.json(null)
+    }
 })
 
 module.exports = router

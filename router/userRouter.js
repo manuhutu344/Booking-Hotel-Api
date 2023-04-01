@@ -50,4 +50,8 @@ router.get('/profile', (req, res)=>{
     }
 })
 
+router.post('/logout', (req, res)=>{
+    res.cookie('token', '').json(true)
+})
+
 module.exports = router

@@ -26,7 +26,7 @@ router.post('/place', (req, res)=>{
         if(err) throw err
        const placeDoc = await Place.create({
             owner: userData.id, 
-            title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests
+            title, address, photos:addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests
         })
         res.json(placeDoc)
     })

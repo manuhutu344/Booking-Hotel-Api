@@ -32,4 +32,12 @@ router.post('/place', (req, res)=>{
     })
 })
 
+router.get('/akomodasi', (req, res)=>{
+    const {token} = req.cookies
+    jwt.verify(token, jwtSecret, {}, async(err, userData)=>{
+        const {id} = userData
+        res.json( await Place.find({owner:id}) )
+    })
+})
+
 module.exports = router

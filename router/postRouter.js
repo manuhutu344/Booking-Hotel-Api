@@ -40,4 +40,9 @@ router.get('/akomodasi', (req, res)=>{
     })
 })
 
+router.get('/lihat/:id', async(req, res)=>{
+    const {id} = req.params
+    res.json(await Place.findById(id))
+})
+
 module.exports = router

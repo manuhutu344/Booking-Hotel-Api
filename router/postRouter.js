@@ -64,4 +64,8 @@ router.put('/update', async(req, res)=>{
     })
 })
 
+router.get('/data', async(req, res)=>{
+    res.json(await Place.find())
+})
+
 module.exports = router

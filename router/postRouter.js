@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const multer = require('multer')
 const Place = require('../models/Place')
+const Boking = require('../models/Boking')
 const jwt = require('jsonwebtoken')
 const jwtSecret = '!@#$%^&*_-+=qwertyuiopasdfghjklzxcvbnm1234567890:;<>?'
 const fs = require('fs')
@@ -66,6 +67,17 @@ router.put('/update', async(req, res)=>{
 
 router.get('/data', async(req, res)=>{
     res.json(await Place.find())
+})
+
+router.post('/boking', (req, res)=>{
+    const {place, checkIn, checkOut, numberOfGuests, name, mobile, price} = req.body
+    Boking.create({
+        place, checkIn, checkOut, numberOfGuests, name, mobile, price
+    }).then((doc)=>{
+        res.json(doc)
+    }).catch((err)=>{
+        throw err
+    })
 })
 
 module.exports = router

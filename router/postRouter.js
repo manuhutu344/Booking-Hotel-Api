@@ -6,6 +6,15 @@ const jwt = require('jsonwebtoken')
 const jwtSecret = '!@#$%^&*_-+=qwertyuiopasdfghjklzxcvbnm1234567890:;<>?'
 const fs = require('fs')
 
+function getUserDataFormToken(req){
+    return new Promise((resolve, reject)=>{
+        jwt.verify(req.cookies.token, jwtSecret, {}, async(err, userData)=>{
+            if(err) throw err
+            resolve(userData)
+        })
+    })
+}
+
 const photosMiddleware = multer({dest:'upload/'})
 router.post('/upload', photosMiddleware.array('photos', 100),(req, res)=>{
     const uploadedFiles = []
@@ -69,15 +78,23 @@ router.get('/data', async(req, res)=>{
     res.json(await Place.find())
 })
 
-router.post('/boking', (req, res)=>{
+router.post('/boking', async(req, res)=>{
+    const userData = await getUserDataFormToken(req)
     const {place, checkIn, checkOut, numberOfGuests, name, mobile, price} = req.body
     Boking.create({
-        place, checkIn, checkOut, numberOfGuests, name, mobile, price
+        place, checkIn, checkOut, numberOfGuests, name, mobile, price,
+        user:userData.id
     }).then((doc)=>{
         res.json(doc)
     }).catch((err)=>{
         throw err
     })
+})
+
+
+router.get('/bokings', async(req, res)=>{
+  const userData =  await getUserDataFormToken(req)
+  res.json(await Boking.find({user:userData.id}))
 })
 
 module.exports = router

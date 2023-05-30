@@ -94,7 +94,7 @@ router.post('/boking', async(req, res)=>{
 
 router.get('/bokings', async(req, res)=>{
   const userData =  await getUserDataFormToken(req)
-  res.json(await Boking.find({user:userData.id}))
+  res.json(await Boking.find({user:userData.id}).populate('place'))
 })
 
 module.exports = router
